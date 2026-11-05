@@ -1,0 +1,46 @@
+Table autores {
+  id integer [pk, increment]
+  nome varchar [not null]
+}
+
+Table categorias {
+  id integer [pk, increment]
+  nome varchar [not null]
+}
+
+Table livros {
+  id integer [pk, increment]
+  titulo varchar [not null]
+  exemplares integer [not null]
+  autorId integer [not null]
+  categoriaId integer [not null]
+}
+
+Table leitores {
+  id integer [pk, increment]
+  nome varchar [not null]
+  matricula varchar [not null, unique]
+  email varchar [not null]
+}
+
+Table emprestimos {
+  id integer [pk, increment]
+  livroId integer [not null]
+  leitorId integer [not null]
+  dataRetirada datetime [not null]
+  dataPrevista datetime [not null]
+  dataDevolucao datetime [null]
+  multa float [not null, default: 0]
+}
+
+// 1:N - um autor possui varios livros
+Ref: livros.autorId > autores.id
+
+// 1:N - uma categoria possui varios livros
+Ref: livros.categoriaId > categorias.id
+
+// 1:N - um livro possui varios emprestimos
+Ref: emprestimos.livroId > livros.id
+
+// 1:N - um leitor possui varios emprestimos
+Ref: emprestimos.leitorId > leitores.id
